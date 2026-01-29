@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHUKYU | 愛知県◯市の草野球チーム</title>
+    <meta name="description" content="愛知県◯市で活動中の草野球チーム「チュウキュウ」。初心者大歓迎、ユニフォーム貸与あり。週末は童心に帰って野球を楽しみませんか？">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- 親しみやすい丸ゴシックと、ポップな英字フォント -->
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            main: '#0EA5E9',   // スカイブルー：爽やかさの象徴
+                            accent: '#FACC15', // サニーイエロー：元気・楽しさ
+                            dark: '#0C4A6E',   // 締め色：ディープオーシャン
+                            light: '#E0F2FE',  // 背景用：薄い空色
+                            white: '#FFFFFF',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['"M PLUS Rounded 1c"', 'sans-serif'],
+                        english: ['"Nunito"', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        // 青空と緑が映える爽やかな背景
+                        'hero-pattern': "linear-gradient(rgba(224, 242, 254, 0.2), rgba(255, 255, 255, 0.1)), url('https://images.unsplash.com/photo-1552066344-2464c205df61?q=80&w=2070&auto=format&fit=crop')",
+                        'dots-pattern': "radial-gradient(#0EA5E9 1px, transparent 1px)"
+                    },
+                    backgroundSize: {
+                        'dots': '20px 20px'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .text-outline {
+            text-shadow: 2px 2px 0px #0C4A6E;
+        }
+
+        /* Pop Animation */
+        .pop-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        .pop-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .slide-in-bottom {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .slide-in-bottom.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 { transition-delay: 100ms; }
+        .stagger-2 { transition-delay: 200ms; }
+        .stagger-3 { transition-delay: 300ms; }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Button Hover */
+        .btn-bounce {
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-bounce:hover {
+            transform: scale(1.05) rotate(-1deg);
+        }
+
+        /* Mobile Menu */
+        #mobile-menu {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        #mobile-menu.hidden-menu {
+            transform: translateX(100%);
+        }
+        #mobile-menu.visible-menu {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body class="font-sans text-brand-dark bg-brand-light antialiased selection:bg-brand-accent selection:text-brand-dark">
+
+    <!-- Header -->
+    <header class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md shadow-sm border-b border-brand-main/10" id="header">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center gap-2 group">
+                        <i class="fas fa-baseball-ball text-brand-main text-3xl animate-spin-slow" style="animation-duration: 10s;"></i>
+                        <span class="text-3xl font-english font-extrabold text-brand-main tracking-tight group-hover:text-brand-accent transition-colors">
+                            CHUKYU
+                        </span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Nav -->
+                <nav class="hidden md:flex items-center space-x-1">
+                    <a href="#about" class="px-5 py-2 text-sm font-bold text-slate-500 hover:text-brand-main transition-colors rounded-full hover:bg-brand-light/50">ABOUT</a>
+                    <a href="#features" class="px-5 py-2 text-sm font-bold text-slate-500 hover:text-brand-main transition-colors rounded-full hover:bg-brand-light/50">FEATURES</a>
+                    <a href="#gallery" class="px-5 py-2 text-sm font-bold text-slate-500 hover:text-brand-main transition-colors rounded-full hover:bg-brand-light/50">GALLERY</a>
+                    <a href="#contact" class="ml-4 inline-flex items-center justify-center px-6 py-2.5 text-sm font-bold rounded-full text-brand-dark bg-brand-accent hover:bg-yellow-300 transition-all shadow-lg hover:shadow-xl shadow-yellow-400/30 transform hover:-translate-y-0.5 btn-bounce">
+                        <i class="fab fa-instagram mr-2"></i> 体験・入団へ
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="menu-btn" class="text-brand-main hover:text-brand-accent focus:outline-none p-2 bg-brand-light rounded-lg">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-50 bg-brand-main hidden-menu md:hidden flex flex-col pt-24 px-8">
+        <button id="close-menu-btn" class="absolute top-6 right-6 text-white p-2 bg-white/20 rounded-full w-10 h-10 flex items-center justify-center">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+        <div class="flex flex-col space-y-6 text-center">
+            <a href="#about" class="mobile-link text-2xl font-bold text-white hover:text-brand-accent">ABOUT</a>
+            <a href="#features" class="mobile-link text-2xl font-bold text-white hover:text-brand-accent">FEATURES</a>
+            <a href="#gallery" class="mobile-link text-2xl font-bold text-white hover:text-brand-accent">GALLERY</a>
+            <a href="#contact" class="mobile-link inline-block w-full py-4 text-xl font-bold rounded-2xl text-brand-dark bg-brand-accent shadow-lg">
+                <i class="fab fa-instagram mr-2"></i> 体験・入団へ
+            </a>
+        </div>
+        <!-- Decorations -->
+        <div class="absolute bottom-0 left-0 w-full h-32 bg-white/10 rounded-t-[50%]"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[100dvh] flex items-center justify-center overflow-hidden pt-20">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1552066344-2464c205df61?q=80&w=2070&auto=format&fit=crop" alt="Blue Sky Baseball" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-br from-white/70 via-white/20 to-brand-main/40"></div>
+        </div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
+            <div class="pop-in inline-block mb-6">
+                <span class="inline-block py-2 px-6 rounded-full bg-white shadow-lg text-brand-main text-sm md:text-base font-bold tracking-widest uppercase border-2 border-brand-main/10">
+                    <i class="fas fa-smile mr-2 text-brand-accent"></i>AMATEUR BASEBALL TEAM
+                </span>
+            </div>
+            
+            <h1 class="text-6xl md:text-8xl lg:text-9xl font-extrabold text-white mb-6 leading-tight tracking-tight font-english pop-in stagger-1 drop-shadow-lg text-outline">
+                PLAY BALL!<br class="md:hidden" />
+                <span class="text-4xl md:text-6xl lg:text-7xl block mt-2 text-brand-dark md:text-white md:text-outline drop-shadow-none">週末は、童心に帰ろう。</span>
+            </h1>
+            
+            <p class="text-lg md:text-2xl text-brand-dark/80 bg-white/60 backdrop-blur-sm rounded-xl py-4 px-8 inline-block mb-10 font-bold pop-in stagger-2 shadow-sm">
+                愛知県◯市で活動中。<br class="sm:hidden"/>初心者大歓迎の草野球チーム「チュウキュウ」
+            </p>
+            
+            <div class="pop-in stagger-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#contact" class="w-full sm:w-auto px-10 py-5 text-lg md:text-xl font-bold rounded-full text-brand-dark bg-brand-accent hover:bg-yellow-300 transition-all duration-300 shadow-[0_10px_30px_rgba(250,204,21,0.4)] hover:shadow-[0_15px_40px_rgba(250,204,21,0.6)] transform hover:-translate-y-1 btn-bounce border-4 border-white">
+                    <i class="fab fa-instagram mr-2"></i> 体験を申し込む
+                </a>
+            </div>
+        </div>
+
+        <!-- Wave Divider -->
+        <div class="absolute bottom-0 left-0 w-full leading-none z-10">
+            <svg class="block w-full h-16 md:h-24 text-white" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="currentColor" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-24 bg-white relative">
+        <!-- Background Pattern -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-light rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-brand-accent/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16 slide-in-bottom">
+                <span class="text-brand-main font-english font-bold tracking-wider uppercase bg-brand-light px-4 py-1 rounded-full text-sm">Who We Are</span>
+                <h2 class="text-3xl md:text-5xl font-bold text-brand-dark mt-4 leading-tight">
+                    楽しむことが、<br>
+                    <span class="text-brand-main relative inline-block">
+                        一番のファインプレー。
+                        <svg class="absolute w-full h-3 -bottom-1 left-0 text-brand-accent -z-10" viewBox="0 0 100 10" preserveAspectRatio="none">
+                            <path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="8" fill="none" />
+                        </svg>
+                    </span>
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <!-- Text -->
+                <div class="order-2 md:order-1 slide-in-bottom stagger-1">
+                    <div class="bg-white/80 backdrop-blur border border-slate-100 rounded-3xl p-8 shadow-xl">
+                        <p class="text-slate-600 leading-loose mb-6 text-lg">
+                            「チュウキュウ」は、愛知県◯市を拠点に活動する草野球チームです。
+                            私たちのモットーは、勝敗よりも<strong class="text-brand-main bg-brand-light px-1">「全員が主役になって楽しむ」</strong>こと。
+                        </p>
+                        <p class="text-slate-600 leading-loose mb-8 text-lg">
+                            エラーも三振も、ここでは笑い話。
+                            仕事や家庭を離れて、ただの野球少年に戻れる場所。
+                            未経験者も、運動不足の方も、家族連れも大歓迎です。
+                            一緒に白球を追いかけませんか？
+                        </p>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-brand-main text-white flex items-center justify-center font-bold text-xl">C</div>
+                            <span class="font-english font-bold text-brand-dark text-xl">TEAM CHUKYU</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image -->
+                <div class="order-1 md:order-2 relative slide-in-bottom stagger-2">
+                    <div class="absolute inset-0 bg-brand-accent rounded-[2rem] transform rotate-3 scale-105"></div>
+                    <img src="https://images.unsplash.com/photo-1595210329266-993d0d880572?q=80&w=1600&auto=format&fit=crop" alt="野球を楽しむ選手" class="relative rounded-[2rem] shadow-2xl w-full h-auto object-cover aspect-[4/3] transform -rotate-2 hover:rotate-0 transition-transform duration-500">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-24 bg-brand-light/50 bg-dots-pattern relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto mb-16 slide-in-bottom">
+                <span class="text-brand-main font-english font-bold tracking-wider uppercase bg-white px-4 py-1 rounded-full text-sm shadow-sm">Our Features</span>
+                <h3 class="text-3xl md:text-4xl font-bold text-brand-dark mt-4">チュウキュウの3つの特徴</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 01 -->
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 slide-in-bottom hover:-translate-y-2 border border-slate-100 group">
+                    <div class="w-20 h-20 bg-brand-light rounded-2xl flex items-center justify-center mb-6 text-brand-main mx-auto group-hover:bg-brand-main group-hover:text-white transition-colors duration-300 transform rotate-3">
+                        <i class="fas fa-hand-holding-heart text-3xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-dark mb-4 text-center">1. 初心者も大歓迎</h4>
+                    <p class="text-slate-600 leading-relaxed text-center">
+                        「久しぶりに体を動かしたい」でOK！<br>
+                        ミスしても「ドンマイ！」と笑い合える、温かくてゆる〜い雰囲気が自慢です。
+                    </p>
+                </div>
+
+                <!-- Feature 02 -->
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 slide-in-bottom stagger-1 hover:-translate-y-2 border border-slate-100 group">
+                    <div class="w-20 h-20 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6 text-brand-accent mx-auto group-hover:bg-brand-accent group-hover:text-brand-dark transition-colors duration-300 transform -rotate-3">
+                        <i class="fas fa-tshirt text-3xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-dark mb-4 text-center">2. ユニフォームあり</h4>
+                    <p class="text-slate-600 leading-relaxed text-center">
+                        入団時の高い出費はナシ！<br>
+                        ユニフォームはチームで用意しているため、グローブひとつあればすぐに試合に参加できます。
+                    </p>
+                </div>
+
+                <!-- Feature 03 -->
+                <div class="bg-white p-8 rounded-[2.5rem] shadow-lg hover:shadow-2xl transition-all duration-300 slide-in-bottom stagger-2 hover:-translate-y-2 border border-slate-100 group">
+                    <div class="w-20 h-20 bg-brand-light rounded-2xl flex items-center justify-center mb-6 text-brand-main mx-auto group-hover:bg-brand-main group-hover:text-white transition-colors duration-300 transform rotate-3">
+                        <i class="fas fa-yen-sign text-3xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-brand-dark mb-4 text-center">3. リーズナブルな会費</h4>
+                    <p class="text-slate-600 leading-relaxed text-center">
+                        年会費は6,000円。<br>
+                        グラウンド代や道具代として大切に使います。無理なく長く続けられる環境です。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section (Card Style) -->
+    <section class="py-20 bg-brand-main relative overflow-hidden">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="max-w-4xl mx-auto px-4 relative z-10">
+            <div class="bg-white rounded-3xl p-8 md:p-12 slide-in-bottom shadow-[0_20px_50px_rgba(14,165,233,0.5)]">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-10">
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="text-2xl font-bold mb-6 text-brand-dark border-b-4 border-brand-accent inline-block pb-1 rounded">活動詳細</h3>
+                        <dl class="space-y-4 text-lg">
+                            <div class="flex flex-col md:flex-row md:items-center bg-slate-50 p-3 rounded-lg">
+                                <dt class="w-36 font-bold text-brand-main"><i class="fas fa-map-marker-alt mr-2"></i>活動エリア</dt>
+                                <dd class="font-medium text-slate-700">愛知県◯市内のグラウンド</dd>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center bg-slate-50 p-3 rounded-lg">
+                                <dt class="w-36 font-bold text-brand-main"><i class="fas fa-calendar-alt mr-2"></i>活動ペース</dt>
+                                <dd class="font-medium text-slate-700">週末メイン（月2〜3回程度）</dd>
+                            </div>
+                            <div class="flex flex-col md:flex-row md:items-center bg-slate-50 p-3 rounded-lg">
+                                <dt class="w-36 font-bold text-brand-main"><i class="fas fa-users mr-2"></i>構成メンバー</dt>
+                                <dd class="font-medium text-slate-700">20〜40代 / 未経験・経験半々</dd>
+                            </div>
+                        </dl>
+                    </div>
+                    
+                    <div class="flex-shrink-0 text-center">
+                        <div class="bg-brand-accent text-brand-dark p-6 rounded-[2rem] transform rotate-2 shadow-lg border-4 border-white">
+                            <p class="text-sm font-bold mb-1 opacity-80">年会費</p>
+                            <p class="text-5xl font-english font-black">6,000<span class="text-xl ml-1">YEN</span></p>
+                            <p class="text-xs font-bold mt-2 bg-white/30 rounded-full py-1 px-2">入団金なし</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-white relative overflow-hidden">
+        <!-- Deco -->
+        <div class="absolute -right-20 top-20 text-slate-100 text-[15rem] font-black font-english -z-0 opacity-50 rotate-90 select-none">PHOTO</div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-12 slide-in-bottom">
+                <span class="text-brand-main font-english font-bold tracking-wider uppercase bg-brand-light px-4 py-1 rounded-full text-sm">Gallery</span>
+                <h3 class="text-3xl md:text-4xl font-bold text-brand-dark mt-4">チームの活動風景</h3>
+            </div>
+            
+            <div class="columns-2 md:columns-3 gap-4 space-y-4">
+                <!-- Photo 1 -->
+                <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom">
+                    <img src="https://images.unsplash.com/photo-1531818298717-5789f268df5c?q=80&w=1600&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+                <!-- Photo 2 -->
+                <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom stagger-1">
+                    <img src="https://images.unsplash.com/photo-1593341646261-002772591605?q=80&w=800&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+                <!-- Photo 3 -->
+                <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom stagger-2">
+                    <img src="https://images.unsplash.com/photo-1473219460010-48283995f560?q=80&w=800&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+                <!-- Photo 4 -->
+                <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom stagger-3">
+                    <img src="https://images.unsplash.com/photo-1516731537599-44e217592aa1?q=80&w=800&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+                <!-- Photo 5 -->
+                <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom">
+                    <img src="https://images.unsplash.com/photo-1587280501635-68a6e82cd7fd?q=80&w=800&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+                 <!-- Photo 6 -->
+                 <div class="break-inside-avoid rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 slide-in-bottom stagger-1">
+                    <img src="https://images.unsplash.com/photo-1562077772-3bd305261997?q=80&w=800&auto=format&fit=crop" alt="Activity" class="w-full h-auto hover:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+            
+            <p class="text-center text-xs text-slate-400 mt-6">※画像はイメージです</p>
+        </div>
+    </section>
+
+    <!-- Footer / CTA -->
+    <footer id="contact" class="bg-brand-light pt-24 pb-12 relative overflow-hidden">
+        <!-- Wave Top -->
+        <div class="absolute top-0 left-0 w-full overflow-hidden leading-none rotate-180">
+            <svg class="relative block w-full h-12 text-white" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" class="fill-current"></path>
+            </svg>
+        </div>
+        
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <div class="mb-10 slide-in-bottom">
+                <i class="fas fa-baseball-ball text-6xl text-brand-main mb-6 animate-float"></i>
+                <h2 class="text-4xl md:text-5xl font-black mb-6 leading-tight text-brand-dark">
+                    さあ、<br>グラウンドで会おう。
+                </h2>
+                <p class="text-slate-500 text-lg leading-relaxed bg-white/50 inline-block p-4 rounded-xl backdrop-blur-sm">
+                    まずは一度、練習を覗きにきませんか？<br>
+                    体験参加の申し込みや、ちょっとした質問も<br class="md:hidden">InstagramのDMでお気軽にどうぞ。
+                </p>
+            </div>
+            
+            <div class="mb-16 slide-in-bottom stagger-1">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="group inline-flex items-center justify-center px-10 py-5 text-xl font-bold rounded-full text-brand-dark bg-brand-accent hover:bg-yellow-300 transition-all duration-300 shadow-[0_10px_20px_rgba(250,204,21,0.3)] hover:shadow-[0_15px_30px_rgba(250,204,21,0.5)] transform hover:-translate-y-1 btn-bounce">
+                    <i class="fab fa-instagram text-3xl mr-3 group-hover:text-pink-600 transition-colors"></i>
+                    <span>InstagramでDMを送る</span>
+                </a>
+            </div>
+            
+            <!-- Footer Links -->
+            <div class="flex flex-col md:flex-row justify-center items-center gap-6 text-sm font-bold text-slate-500 mb-12 border-t border-brand-main/10 pt-12">
+                <a href="#about" class="hover:text-brand-main transition-colors px-4 py-2 rounded-lg hover:bg-white">チームについて</a>
+                <a href="#features" class="hover:text-brand-main transition-colors px-4 py-2 rounded-lg hover:bg-white">特徴</a>
+                <a href="#gallery" class="hover:text-brand-main transition-colors px-4 py-2 rounded-lg hover:bg-white">ギャラリー</a>
+                <span class="px-4 py-2 bg-white rounded-lg text-brand-main">活動場所：愛知県◯市</span>
+            </div>
+
+            <p class="text-xs text-slate-400 font-english tracking-widest">
+                &copy; 2024 CHUKYU Baseball Team. All Rights Reserved.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const menuBtn = document.getElementById('menu-btn');
+            const closeMenuBtn = document.getElementById('close-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileLinks = document.querySelectorAll('.mobile-link');
+
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('hidden-menu');
+                if (isHidden) {
+                    mobileMenu.classList.remove('hidden-menu');
+                    mobileMenu.classList.add('visible-menu');
+                    document.body.style.overflow = 'hidden'; 
+                } else {
+                    mobileMenu.classList.add('hidden-menu');
+                    mobileMenu.classList.remove('visible-menu');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            menuBtn.addEventListener('click', toggleMenu);
+            closeMenuBtn.addEventListener('click', toggleMenu);
+
+            mobileLinks.forEach(link => {
+                link.addEventListener('click', toggleMenu);
+            });
+
+            // Scroll Animation (Intersection Observer)
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); 
+                    }
+                });
+            }, observerOptions);
+
+            const animElements = document.querySelectorAll('.pop-in, .slide-in-bottom');
+            animElements.forEach(el => observer.observe(el));
+
+            // Smooth Scroll
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        const headerOffset = 80;
+                        const elementPosition = targetElement.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: "smooth"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
